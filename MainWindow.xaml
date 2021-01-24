@@ -1,0 +1,127 @@
+﻿<Window x:Class="TJ.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TJ"
+        mc:Ignorable="d"
+        Title="Журнал Трейдера" Height="1300" Width="1350" Loaded="Window_Loaded" ResizeMode="NoResize">
+    <Window.Resources>
+        <local:ConvertItemToIndex x:Key="IndexConverter"/>
+    </Window.Resources>
+    
+    <Grid Margin="0,5,5,10" HorizontalAlignment="Right" Width="1334">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="350"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid x:Name="dgTraderTable" Margin="5,5,5,5" AutoGenerateColumns="False" ColumnHeaderHeight="50" Grid.ColumnSpan="2" SelectionChanged="SelectionChange_DG">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding}"></TextBlock>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+
+            <DataGrid.RowHeaderStyle>
+                <Style TargetType="{x:Type DataGridRowHeader}">
+                    <Setter Property="Content" Value="{Binding Converter={StaticResource IndexConverter}}" />
+                </Style>
+            </DataGrid.RowHeaderStyle>
+
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Binding="{Binding Path=DateIn}" Header="Дата входа" Width="90">
+
+                </DataGridTextColumn>
+                <DataGridCheckBoxColumn Binding="{Binding Path=LongPos, UpdateSourceTrigger=PropertyChanged}" Header="Длинная позиция" Width="60">
+
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn Binding="{Binding Path=Ticker}" Header="Тикер" Width="60">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Volume}" Header="Кол-во акций" Width="60">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=PriceIn}" Header="Цена входа" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=KomissiaIn}" Header="Комиссия входа" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=SborIn}" Header="Сборы входа" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Path=ItogIn}" Header="Стоимость входа" Width="70">
+
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Konvert}" Header="Конверт" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=DateOut}" Header="Дата выхода" Width="90">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=PriceOut}" Header="Цена выхода" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=KomissiaOut}" Header="Комиссия выхода" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=SborOut}" Header="Сборы выхода" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Path=ItogOut}" Header="Стоимость выхода" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Path=Result}" Header="Результат" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=RatingIn}" Header="Рейтинг входа" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=RatingOut}" Header="Рейтинг выхода" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Rating}" Header="Рейтинг сделки" Width="70">
+
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="1" Grid.Column="0" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
+            <Image x:Name="Im10" Margin="5" Grid.Row="1" Grid.Column="0" Stretch="Fill" Source="Start.png" />
+        </Border>
+        <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="1" Grid.Column="1" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
+            <Image x:Name="Im11" Margin="5" Grid.Row="1" Grid.Column="1" Stretch="Fill" Source="Start.png"/>
+        </Border>
+        <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="2" Grid.Column="0" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
+            <Image x:Name="Im20" Margin="5" Grid.Row="2" Grid.Column="0" Source="Start.png" AllowDrop="True" Stretch="Fill"/>
+        </Border>
+
+        <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="2" Grid.Column="1" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
+            <Image x:Name="Im21" Margin="5" Grid.Row="2" Grid.Column="1" Source="Start.png" AllowDrop="True" Stretch="Fill"/>
+        </Border>
+        <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="3" Grid.Column="0" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
+            <Image x:Name="Im30" Margin="5" Grid.Row="3" Grid.Column="0" Source="Start.png" AllowDrop="True" Stretch="Fill"/>
+        </Border>
+        <Border x:Name="bLast" BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="3" Grid.Column="1" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
+            <Image x:Name="Im31" Margin="5" Grid.Row="3" Grid.Column="1" Source="Start.png" AllowDrop="True" Stretch="Fill"/>
+        </Border>
+    </Grid>
+</Window>
