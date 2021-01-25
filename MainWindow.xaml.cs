@@ -82,13 +82,15 @@ namespace TJ
                     if (e.Data.GetDataPresent(DataFormats.FileDrop))
                     {
                         var border = (Border)sender;
-                        var image = (Image)border.Child;
+                        var imgThumbnail = (Image)border.Child;
                         string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                         string filename = Path.GetFileName(files[0]);
                         Uri filepath = new Uri(files[0]);
-                        image.Source = new BitmapImage(filepath);
-                        var imageName = PATHPICK+"#"+currentRowIndex+image.Name+".bmp";
-                        _fileIOService.SavePic((BitmapImage)image.Source, imageName);
+
+                        imgThumbnail.Source = new BitmapImage(filepath);
+                        var imageName = PATHPICK+"#"+currentRowIndex+ imgThumbnail.Name+".bmp";
+
+                        _fileIOService.SavePic((BitmapImage)imgThumbnail.Source, imageName);
                     }
                 }
             }
@@ -108,7 +110,7 @@ namespace TJ
 
             try
             {
-                foreach (FileInfo o in folder.GetFiles())
+                foreach (FileInfo o in folder.GetFiles())       //
                 {
 
                     string name = o.Name;

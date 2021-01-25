@@ -57,6 +57,7 @@ namespace TJ.Services
             {
                 return new BitmapImage(defaultImgPath);
             }
+
             return new BitmapImage(new Uri(filePath));
         }
 
@@ -66,12 +67,6 @@ namespace TJ.Services
             encoder.Frames.Add(BitmapFrame.Create(img));
             try
             {
-                //var fileExists = File.Exists(fileName);
-                //if (fileExists)
-                //{
-                //    File.Delete(fileName);
-                //    //File.Delete("D:\\C_ALL\\TraderJournal\\TJ\\bin\\Debug\\PicData\\1.txt");
-                //}
                     
                 using (FileStream stream = new FileStream(fileName, FileMode.Create))
                     encoder.Save(stream);

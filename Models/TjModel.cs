@@ -13,6 +13,7 @@ namespace TJ.Models
         private string _dateIn;
         private bool _isLongPos;
         private string _ticker;
+        private string _comment;
         private int _volume;
         private double _priceIn;
         private double _komissiaIn;
@@ -24,7 +25,10 @@ namespace TJ.Models
         private double _sborOut;
         private double _itogIn;
         private double _itogOut;
-        private double _result;
+        private double _resultNominal;
+        private double _resultPercent;
+        private int _time;
+        private double _profitPerDay;
         private double _ratingIn;
         private double _ratingOut;
         private double _rating;
@@ -40,6 +44,7 @@ namespace TJ.Models
                 DateTime.TryParse(value, out tempDataIn);
                 _dateIn = tempDataIn.ToString("dd MMMM yy");
                 OnPropertyChanged("DateIn");
+                OnPropertyChanged("Time");
             }
         }
         public string DateOut
@@ -53,6 +58,7 @@ namespace TJ.Models
                 DateTime.TryParse(value, out tempData);
                 _dateOut = tempData.ToString("dd MMMM yy");
                 OnPropertyChanged("DateOut");
+                OnPropertyChanged("Time");
             }
         }
         public bool LongPos
@@ -64,7 +70,7 @@ namespace TJ.Models
                     return;
                 _isLongPos = value;
                 OnPropertyChanged("LonPgos");
-                OnPropertyChanged("Result");
+                MassPropertyChange();
             }
         }
         public string Ticker
@@ -78,6 +84,17 @@ namespace TJ.Models
                 OnPropertyChanged("Ticker");
             }
         }
+        public string Comment
+        {
+            get { return _comment; }
+            set
+            {
+                if (_comment == value)
+                    return;
+                _comment = value;
+                OnPropertyChanged("Comment");
+            }
+        }
         public int Volume
         {
             get { return _volume; }
@@ -89,6 +106,17 @@ namespace TJ.Models
                 OnPropertyChanged("Volume");
             }
         }
+        public int Time
+        {
+            get {
+                DateTime dateEnd;
+                DateTime.TryParse(DateOut, out dateEnd);
+                DateTime dateStart;
+                DateTime.TryParse(DateIn, out dateStart);
+
+                return dateEnd.Subtract(dateStart).Days;
+            }
+        }
         public double PriceIn
         {
             get { return _priceIn; }
@@ -97,8 +125,7 @@ namespace TJ.Models
                     return;
                 _priceIn = value;
                 OnPropertyChanged("PriceIn");
-                OnPropertyChanged("ItogIn");
-                OnPropertyChanged("Result");
+                MassPropertyChange();
             }
         }
         public double KomissiaIn
@@ -109,9 +136,8 @@ namespace TJ.Models
                 if (_komissiaIn == value)
                     return;
                 _komissiaIn = value;
-                OnPropertyChanged("Komissia");
-                OnPropertyChanged("ItogIn");
-                OnPropertyChanged("Result");
+                OnPropertyChanged("KomissiaIn");
+                MassPropertyChange();
             }
         }
         public double SborIn
@@ -123,8 +149,7 @@ namespace TJ.Models
                     return;
                 _sborIn = value;
                 OnPropertyChanged("SborIn");
-                OnPropertyChanged("ItogIn");
-                OnPropertyChanged("Result");
+                MassPropertyChange();
             }
         }
         public double ItogIn
@@ -133,7 +158,6 @@ namespace TJ.Models
             {
                 return _priceIn * _volume + _komissiaIn + _sborIn;
             }
-
         }
         public double Konvert
         {
@@ -144,6 +168,7 @@ namespace TJ.Models
                     return;
                 _konvert = value;
                 OnPropertyChanged("Konvert");
+                MassPropertyChange();
             }
         }
         public double PriceOut
@@ -155,8 +180,7 @@ namespace TJ.Models
                     return;
                 _priceOut = value;
                 OnPropertyChanged("PriceOut");
-                OnPropertyChanged("ItogOut");
-                OnPropertyChanged("Result");
+                MassPropertyChange();
             }
         }
         public double KomissiaOut
@@ -168,8 +192,7 @@ namespace TJ.Models
                     return;
                 _komissiaOut = value;
                 OnPropertyChanged("KomissiaOut");
-                OnPropertyChanged("ItogOut");
-                OnPropertyChanged("Result");
+                MassPropertyChange();
             }
         }
         public double SborOut
@@ -181,8 +204,7 @@ namespace TJ.Models
                     return;
                 _sborOut = value;
                 OnPropertyChanged("SborOut");
-                OnPropertyChanged("ItogOut");
-                OnPropertyChanged("Result");
+                MassPropertyChange();
             }
         }
         public double ItogOut
@@ -191,44 +213,65 @@ namespace TJ.Models
                 return _priceOut * _volume - _komissiaOut - _sborOut;
             }
         }
-        public double Result
+        public double ResultNominal
         {
             get
             {
-                return _isLongPos ? ItogOut - ItogIn : ItogIn - ItogOut; ;
+                return _isLongPos ? ItogOut - ItogIn : ItogIn - ItogOut;
             }
         }
-        public double RatingIn
+        public double ResultPercent
         {
-            get { return _ratingIn; }
-            set
+            get
             {
-                if (_ratingIn == value)
-                    return;
-                _ratingIn = value;
-                OnPropertyChanged("RatingIn");
+                return _isLongPos ? Math.Round(100*(ItogOut - ItogIn)/ ItogIn,2,MidpointRounding.ToEven) : Math.Round(100 * (ItogIn - ItogOut)/ ItogIn, 2, MidpointRounding.ToEven);
             }
         }
-        public double RatingOut
+        public double ProfitPerTime
         {
-            get { return _ratingOut; }
-            set
+            get
             {
-                if (_ratingOut == value)
-                    return;
-                _ratingOut = value;
-                OnPropertyChanged("RatingOut");
+                return Math.Round(ResultNominal / Time, 2, MidpointRounding.ToEven);
             }
         }
+
+        //public double RatingIn
+        //{
+        //    get { 
+        //        return _ratingIn;
+        //    }
+        //}
+        //public double RatingOut
+        //{
+        //    get { return _ratingOut; }
+        //    set
+        //    {
+        //        if (_ratingOut == value)
+        //            return;
+        //        _ratingOut = value;
+        //        OnPropertyChanged("RatingOut");
+        //    }
+        //}
+
         public double Rating
         {
-            get { return _rating; }
-            set
-            {
-                if (_rating == value)
-                    return;
-                _rating = value;
-                OnPropertyChanged("Rating");
+            get {
+
+                var marga = (_isLongPos) ? ItogOut -ItogIn : ItogIn - ItogOut;
+                if (marga>0.3*Konvert)
+                    return 5;
+                else
+                {
+                    if (marga > 0.2 * Konvert)
+                        return 4;
+                    else
+                    {
+                        if (marga > 0.1 * Konvert)
+                            return 3;
+                        else
+                            return 2;
+                    }
+                }
             }
         }
 
@@ -237,6 +280,16 @@ namespace TJ.Models
         protected virtual void OnPropertyChanged(string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void MassPropertyChange()
+        {
+            OnPropertyChanged("ItogIn");
+            OnPropertyChanged("ItogOut");
+            OnPropertyChanged("ResultNominal");
+            OnPropertyChanged("ResultPercent");
+            OnPropertyChanged("Rating");
+            OnPropertyChanged("ProfitPerTime");
         }
     }
 }

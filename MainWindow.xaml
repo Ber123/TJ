@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TJ"
         mc:Ignorable="d"
-        Title="Журнал Трейдера" Height="1300" Width="1350" Loaded="Window_Loaded" ResizeMode="NoResize">
+        Title="Журнал Трейдера" Height="1300" Width="1550" Loaded="Window_Loaded" ResizeMode="NoResize">
     <Window.Resources>
         <local:ConvertItemToIndex x:Key="IndexConverter"/>
     </Window.Resources>
     
-    <Grid Margin="0,5,5,10" HorizontalAlignment="Right" Width="1334">
+    <Grid Margin="0,5,5,10" HorizontalAlignment="Right">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -89,16 +89,29 @@
                 <DataGridTextColumn IsReadOnly="True" Binding="{Binding Path=ItogOut}" Header="Стоимость выхода" Width="70">
 
                 </DataGridTextColumn>
-                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Path=Result}" Header="Результат" Width="70">
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Path=ResultNominal}" Header="Результат ($)" Width="70">
 
                 </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Path=ResultPercent}" Header="Результат (%)" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Path=Time}" Header="Срок (день)" Width="70">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Path=ProfitPerTime}" Header="Доходность в день" Width="80">
+
+                <!--</DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Path=RatingIn}" Header="Рейтинг входа" Width="70">
 
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Path=RatingOut}" Header="Рейтинг выхода" Width="70">
+                <DataGridTextColumn Binding="{Binding Path=RatingOut}" Header="Рейтинг выхода" Width="70">-->
 
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Path=Rating}" Header="Рейтинг сделки" Width="70">
+                    
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Comment}" Header="Комментарий" Width="160">
+
 
                 </DataGridTextColumn>
             </DataGrid.Columns>
