@@ -5,6 +5,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
+using System.IO;
+using System.Windows.Media;
 
 namespace TJ.Models
 {
@@ -23,15 +26,8 @@ namespace TJ.Models
         private double _priceOut;
         private double _komissiaOut;
         private double _sborOut;
-        private double _itogIn;
-        private double _itogOut;
-        private double _resultNominal;
-        private double _resultPercent;
-        private int _time;
-        private double _profitPerDay;
-        private double _ratingIn;
-        private double _ratingOut;
-        private double _rating;
+        private int _number;
+        
 
         public string DateIn
         {
@@ -235,6 +231,51 @@ namespace TJ.Models
             }
         }
 
+        public double Rating
+        {
+            get
+            {
+
+                var marga = (_isLongPos) ? ItogOut - ItogIn : ItogIn - ItogOut;
+                if (marga > 0.3 * Konvert)
+                    return 5;
+                else
+                {
+                    if (marga > 0.2 * Konvert)
+                        return 4;
+                    else
+                    {
+                        if (marga > 0.1 * Konvert)
+                            return 3;
+                        else
+                            return 2;
+                    }
+                }
+            }
+        }
+
+        ImageSource _imageSource21;
+
+        public ImageSource ImageSource21
+        {
+            get {
+
+                //Uri defaultImgPath = new Uri($"{Environment.CurrentDirectory}\\PicData\\Default.png");
+                //string currentImgPath = $"{Environment.CurrentDirectory}\\PicData\\)"+_number.ToString()+"Im21";
+                //var fileExists = File.Exists(currentImgPath);
+                //if (!fileExists)
+                //{
+                //    return new BitmapImage(defaultImgPath);
+                //}
+                return _imageSource21; 
+            }
+            set
+            {
+                _imageSource21 = value;
+                OnPropertyChanged("ImageSource21");
+            }
+        }
+
         //public double RatingIn
         //{
         //    get { 
@@ -253,27 +294,7 @@ namespace TJ.Models
         //    }
         //}
 
-        public double Rating
-        {
-            get {
-
-                var marga = (_isLongPos) ? ItogOut -ItogIn : ItogIn - ItogOut;
-                if (marga>0.3*Konvert)
-                    return 5;
-                else
-                {
-                    if (marga > 0.2 * Konvert)
-                        return 4;
-                    else
-                    {
-                        if (marga > 0.1 * Konvert)
-                            return 3;
-                        else
-                            return 2;
-                    }
-                }
-            }
-        }
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -290,6 +311,17 @@ namespace TJ.Models
             OnPropertyChanged("ResultPercent");
             OnPropertyChanged("Rating");
             OnPropertyChanged("ProfitPerTime");
+        }
+
+        public void SetImageData(byte[] data)
+        {
+            var source = new BitmapImage();
+            source.BeginInit();
+            source.StreamSource = new MemoryStream(data);
+            source.EndInit();
+
+            // use public setter
+            ImageSource21 = source;
         }
     }
 }

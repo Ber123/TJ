@@ -19,7 +19,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="350"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="120"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -117,24 +117,24 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="1" Grid.Column="0" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
-            <Image x:Name="Im10" Margin="5" Grid.Row="1" Grid.Column="0" Stretch="Fill" Source="Start.png" />
-        </Border>
-        <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="1" Grid.Column="1" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
-            <Image x:Name="Im11" Margin="5" Grid.Row="1" Grid.Column="1" Stretch="Fill" Source="Start.png"/>
-        </Border>
         <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="2" Grid.Column="0" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
-            <Image x:Name="Im20" Margin="5" Grid.Row="2" Grid.Column="0" Source="Start.png" AllowDrop="True" Stretch="Fill"/>
+            <Image x:Name="Im10" Margin="5" Stretch="Fill" Source="Start.png" />
         </Border>
-
         <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="2" Grid.Column="1" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
-            <Image x:Name="Im21" Margin="5" Grid.Row="2" Grid.Column="1" Source="Start.png" AllowDrop="True" Stretch="Fill"/>
+            <Image x:Name="Im11" Margin="5" Stretch="Fill" Source="Start.png"/>
         </Border>
         <Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="3" Grid.Column="0" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
+            <Image x:Name="Im20" Margin="5" Source="Start.png" AllowDrop="True" Stretch="Fill"/>
+        </Border>
+
+        <Border x:Name="bLast" BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="3" Grid.Column="1" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
+            <Image x:Name="Im21" Source="{Binding ImageSource21,UpdateSourceTrigger=PropertyChanged}" Margin="5" Stretch="Fill" />
+        </Border>
+        <!--<Border BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="3" Grid.Column="0" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
             <Image x:Name="Im30" Margin="5" Grid.Row="3" Grid.Column="0" Source="Start.png" AllowDrop="True" Stretch="Fill"/>
         </Border>
         <Border x:Name="bLast" BorderBrush="AliceBlue" BorderThickness="5" Grid.Row="3" Grid.Column="1" Background="White" AllowDrop="True" Drop="FileDropBorder_Drop" MouseLeftButtonDown="MouseLeftButtonDown_Border">
             <Image x:Name="Im31" Margin="5" Grid.Row="3" Grid.Column="1" Source="Start.png" AllowDrop="True" Stretch="Fill"/>
-        </Border>
+        </Border>-->
     </Grid>
 </Window>

@@ -29,16 +29,27 @@ namespace TJ
         private BindingList<TjModel> _tjData;
         private FileIOService _fileIOService;
         private FileIOService _picIOService;
-
+        //DisplayedImagePath21
+        public string DisplayedImagePath21 { get; set; }
+        //{
+        //    get { return @"d:\C_All\TraderJournal\TJ\Start.png"; }
+        //}
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        public int GetCurrentIndex()
+        {
+            return dgTraderTable.Items.IndexOf(dgTraderTable.CurrentItem);
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _fileIOService = new FileIOService(PATH);
+            if (!Directory.Exists(PATHPICK))
+                Directory.CreateDirectory(PATHPICK);
 
             try
             {
@@ -87,9 +98,14 @@ namespace TJ
                         string filename = Path.GetFileName(files[0]);
                         Uri filepath = new Uri(files[0]);
 
-                        imgThumbnail.Source = new BitmapImage(filepath);
-                        var imageName = PATHPICK+"#"+currentRowIndex+ imgThumbnail.Name+".bmp";
+                        BitmapImage image = new BitmapImage();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.UriSource = filepath;
+                        image.EndInit();
+                        imgThumbnail.Source = image;
 
+                        var imageName = PATHPICK+currentRowIndex+ imgThumbnail.Name+".bmp";
                         _fileIOService.SavePic((BitmapImage)imgThumbnail.Source, imageName);
                     }
                 }
@@ -101,55 +117,29 @@ namespace TJ
             var currentRowIndex = dgTraderTable.Items.IndexOf(dgTraderTable.CurrentItem);
             _picIOService = new FileIOService(PATHPICK);
             DirectoryInfo folder = new DirectoryInfo(PATHPICK);
-            Im10.Source = null;
-            Im11.Source = null;
-            Im20.Source = null;
-            Im21.Source = null;
-            Im30.Source = null;
-            Im31.Source = null;
 
-            try
-            {
-                foreach (FileInfo o in folder.GetFiles())       //
-                {
 
-                    string name = o.Name;
-                    if (name.StartsWith("#"))
-                    {
-                        if (o.Name.StartsWith("#"))
-                        {
-                            
-                            var newName = o.Name.Replace("#", "");
-                            if (File.Exists(PATHPICK + newName))
-                            {
-                                File.Delete(PATHPICK + newName);
-                            }
-
-                            File.Copy(PATHPICK+o.Name, PATHPICK+ newName);
-                            File.Delete(PATHPICK+o.Name);
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
             Im10.Source = _fileIOService.LoadPic(PATHPICK + currentRowIndex + "Im10.bmp");
             Im11.Source = _fileIOService.LoadPic(PATHPICK + currentRowIndex + "Im11.bmp");
             Im20.Source = _fileIOService.LoadPic(PATHPICK + currentRowIndex + "Im20.bmp");
-            Im21.Source = _fileIOService.LoadPic(PATHPICK + currentRowIndex + "Im21.bmp");
-            Im30.Source = _fileIOService.LoadPic(PATHPICK + currentRowIndex + "Im30.bmp");
-            Im31.Source = _fileIOService.LoadPic(PATHPICK + currentRowIndex + "Im31.bmp");
+
+            var model = new TjModel();
+            model.SetImageData(File.ReadAllBytes(PATHPICK + currentRowIndex + "Im21.bmp"));
+
+            //_tjData.
+            //DisplayedImagePath21 = new Uri(PATHPICK + currentRowIndex + "Im21.bmp").ToString();
+            //Im21.Source = _fileIOService.LoadPic(PATHPICK + currentRowIndex + "Im21.bmp");
+            //Im30.Source = _fileIOService.LoadPic(PATHPICK + currentRowIndex + "Im30.bmp");
+            //Im31.Source = _fileIOService.LoadPic(PATHPICK + currentRowIndex + "Im31.bmp");
 
         }
 
         private void MouseLeftButtonDown_Border(object sender, MouseButtonEventArgs e)
         {
-            var MinWidth = 700;
+            var MinWidth = 800;
             var border = (Border)sender;
             var img = (Image)border.Child;
-            BitmapImage imgBkp = (BitmapImage)Im31.Source;
+            BitmapImage imgBkp = (BitmapImage)Im21.Source;
 
 
             var rowIndex = Convert.ToInt32(img.Name.Substring(2, 1));
@@ -157,27 +147,29 @@ namespace TJ
             var grid = (Grid)border.Parent;
             var currentRowIndex = dgTraderTable.Items.IndexOf(dgTraderTable.CurrentItem);
 
-
             if (border.ActualWidth < MinWidth)
             {
-
                 Grid.SetColumn(bLast, 0);
-                Grid.SetRow(bLast, 1);
                 Grid.SetColumnSpan(bLast, 2);
-                Grid.SetRowSpan(bLast, 3);
-                Im31.Source = img.Source;
+                Grid.SetRow(bLast, 2);
+                Grid.SetRowSpan(bLast, 2);
+                Im21.Source = img.Source;
             }
             else
             {
                 Grid.SetColumn(bLast, 1);
-                Grid.SetRow(bLast, 3);
                 Grid.SetColumnSpan((Border)sender, 1);
+                Grid.SetRow(bLast, 2);
                 Grid.SetRowSpan((Border)sender, 1);
-                Im31.Source = _picIOService.LoadPic(PATHPICK + currentRowIndex + "Im31.bmp");
+                Im21.Source = imgBkp;
+                //Im21.Source = _picIOService.LoadPic(PATHPICK + currentRowIndex + "Im21.bmp");
             }
         }
 
+
+
     }
+
 
     public class ConvertItemToIndex : IValueConverter
     {

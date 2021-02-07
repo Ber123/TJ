@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -48,17 +49,26 @@ namespace TJ.Services
 
         }
 
-
         public BitmapImage LoadPic(string filePath)
         {
-            Uri defaultImgPath = new Uri($"{Environment.CurrentDirectory}\\PicData\\Default.png");
+            //Uri defaultImgPath = new Uri($"{Environment.CurrentDirectory}\\PicData\\Default.png");
+
             var fileExists = File.Exists(filePath);
             if (!fileExists)
             {
-                return new BitmapImage(defaultImgPath);
+                string[] all = System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceNames();
+                var btmimg = new Bitmap(System.Reflection.Assembly.GetEntryAssembly(). GetManifestResourceStream("MyProject.Resources.myimage.png"));
+                //return new BitmapImage(defaultImgPath);
             }
 
-            return new BitmapImage(new Uri(filePath));
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            
+            image.UriSource = new Uri(filePath);
+            image.EndInit();
+            
+            return image;
         }
 
         public void SavePic(BitmapImage img, string fileName)
@@ -76,8 +86,6 @@ namespace TJ.Services
 
                 throw;
             }
-
-
         }
     }
 
